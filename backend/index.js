@@ -1,11 +1,15 @@
 const express=require('express');
 require('dotenv').config();
 
+const cors=require('cors');
+
 const PORT=process.env.PORT;
 const UserRoutes=require('./routes/UserRoute')
 
 const {connectDB}=require('./configs/db');
 const app=express();
+
+app.use(cors());
 
 app.get('/health',(req,res)=>{
 res.send('server working fine')

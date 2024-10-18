@@ -6,24 +6,36 @@ import { validationSchema } from '../../configs/validations/SchemaValidation';
 
 const UserForm = () => {
 
-    const BASE_URL=import.meta.VITE_BASE_URL;
+    const BASE_URL=import.meta.env.VITE_BASE_URL;
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors },reset } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const onSubmit=async(data)=>{
 try {
-    const response=await fetch(`${BASE_URL}/`)
-} catch (error) {
     
+    const response=await fetch(`${BASE_URL}/api/v1/user`,{
+        method:'POST',
+        headers:{
+           "Content-type": 'application/json',
+        },
+        body:JSON.stringify(data),
+    })
+
+    console.log(response.json());
+
+    reset();
+    alert('user created successfully')
+} catch (error) {
+    console.log(error);
 }
   }
 
   return (
     <div className='m-2 p-4 border-2 border-gray-400'>
          <h2 className=''>Add User Form</h2>
-         <div class="text-sm text-right text-gray-500 italic mb-4">
+         <div className="text-sm text-right text-gray-500 italic mb-4">
     All fields are mandatory
   </div>
     <form onSubmit={handleSubmit(onSubmit)} className='grid col-span-2 '>
