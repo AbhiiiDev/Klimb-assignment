@@ -5,7 +5,7 @@ import './index.css'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import ManageUser from './pages/ManageUser.jsx';
 import UserForm from './forms/UserForm.jsx';
-
+import EditForm from './forms/EditForm.jsx';
 
 const router=createBrowserRouter([
   {
@@ -15,6 +15,10 @@ const router=createBrowserRouter([
 {  path:"/create",
   element:<UserForm/>
 },
+{
+  path:"/edit/:id",
+  element:<EditForm/>
+}
 ])
 
 createRoot(document.getElementById('root')).render(

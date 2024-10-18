@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ManageUser = () => {
 
     const [users,setUsers]=useState([]);
+
     const [searchEmail,setSearchEmail]=useState("");
 
     const BASE_URL=import.meta.env.VITE_BASE_URL;
+    const navigate=useNavigate();
+
 
     useEffect(()=>{
 
  const fetchAllUser=async()=>{
 
-const response=await fetch(`${BASE_URL}/api/v1/user`);
+const response=await fetch(`${BASE_URL}/api/v1/users`);
 const data=await response.json();
 setUsers(data.users);
 console.log(data);
@@ -21,6 +24,10 @@ console.log(data);
         fetchAllUser();
     },[])
 
+
+        const handleEditUser=(userId)=>{
+            navigate(`/edit/${userId}`);
+        }
 
 
         const filteredUser=users.filter((user)=>user.email.toLowerCase().includes(searchEmail.toLowerCase()));
@@ -60,13 +67,15 @@ console.log(data);
         <tbody>
             {
             filteredUser.map((user)=>(
-                <tr className='border-b'>
+        
+               <tr key={user.email} className='border-b cursor-pointer '  onClick={()=>handleEditUser(user._id)}>
                       <td className="p-3">{user.firstName+" "+user.lastName}</td>
             <td className="p-3">{user.phone}</td>
             <td className="p-3">{user.role}</td>
             <td className="p-3">{user.location}</td>
             <td className="p-3">{user.department}</td>
                 </tr>
+          
             ))
             }   
         </tbody>

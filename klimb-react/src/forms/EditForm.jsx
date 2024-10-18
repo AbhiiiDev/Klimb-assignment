@@ -1,9 +1,65 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { validationSchema } from '../../configs/validations/SchemaValidation';
+import { useParams } from 'react-router-dom';
 
 const EditForm = () => {
+
+
+    const {id}=useParams();
+
+
+    const { register, handleSubmit, formState: { errors },reset } = useForm({
+        resolver: yupResolver(validationSchema),
+      });
+      
+
+      const BASE_URL=import.meta.env.VITE_BASE_URL;
+
+
+useEffect(()=>{
+
+const fetchUserData=async()=>{
+try {
+  
+    const response=await fetch(`${BASE_URL}/api/v1/user/${id}`);
+    const data=await response.json();
+
+    reset(data.user);
+
+} catch (error) {
+    console.error('Error is:',error);
+}
+};
+fetchUserData();
+},[id,reset])
+
+
+    const onSubmit=async(data)=>{
+try {
+    const response=await fetch(`${BASE_URL}/api/v1/user/${id}`,{
+        method:"PUT",
+        headers:{
+            "Content-Type":'application/json',
+        },
+        body:JSON.stringify(data),
+    })
+
+    if(response.ok){
+        alert('user updated successfully');
+        reset()
+    }
+} catch (error) {
+    console.log(error);
+}
+    }
+
+
   return (
     <div className='m-2 p-4 border-2 border-gray-400'>
-    <h2 className=''>Add User Form</h2>
+    <h2 className='font-bold text-xl'>Edit User Form</h2>
     <div className="text-sm text-right text-gray-500 italic mb-4">
 All fields are mandatory
 </div>
@@ -54,7 +110,7 @@ All fields are mandatory
  </div>
 </div>
 
-<button type="submit" className="mt-5 bg-black text-white w-20 h-8 rounded-md ">Add User</button>
+<button type="submit" className="mt-5 bg-black text-white w-20 h-8 rounded-md ">Edit User</button>
 </form>    </div>
   )
 }
