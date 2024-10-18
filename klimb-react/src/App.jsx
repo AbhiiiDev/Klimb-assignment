@@ -1,12 +1,14 @@
 import './App.css'
-import Home from './components/Home'
 import UserForm from './forms/UserForm'
+import ManageUser from './pages/ManageUser'
 
 function App() {
 
   return (
     <>
- <UserForm/>
+
+ {/* <UserForm/> */}
+ <ManageUser/>
     </>
   )
 }

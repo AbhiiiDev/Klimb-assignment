@@ -12,4 +12,14 @@ try {
 }
 }
 
-module.exports={createUser}
+
+const getAllUser=async(req,res)=>{
+try {
+const users=await User.find();
+return res.status(200).json({users:users,message:"user fetched successfully"});
+} catch (error) {
+    return res.status(400).json({message:"can't find any users"});
+}
+}
+
+module.exports={createUser,getAllUser}
